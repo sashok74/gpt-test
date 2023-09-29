@@ -1,0 +1,48 @@
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "posts_iu",
+    "prm":{
+        "theme_id": "65146ca1e3e225e209381caa",
+        "user_msg": "напиши программу на с++ 8"
+    }
+}
+
+###
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "posts_iu",
+    "prm":{
+        "_id": "6514737c8c3e55b0f5cb606b",
+        "p_id": "6513356ff3c66226fd5b2f7e"
+    }
+}
+
+###
+
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "posts_s",
+    "prm":{
+        "theme_id": "65146ca1e3e225e209381caa"
+    }
+}
+
+###
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "posts_d",
+    "prm":{
+        "_id": "6513356ff3c66226fd5b2f7e"
+    }
+}
