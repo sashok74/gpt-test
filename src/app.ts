@@ -1,6 +1,7 @@
 import express from 'express';
-
 import routes from './modules/routes.js';
+import { type } from 'os';
+
 
 class App {
   public server;
@@ -14,6 +15,7 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(express.urlencoded({ extended: true }));
   }
 
   routes() {
@@ -22,3 +24,4 @@ class App {
 }
 
 export default new App().server;
+

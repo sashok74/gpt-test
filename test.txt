@@ -1,0 +1,47 @@
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "themes_iu",
+    "prm":{
+        "p_id": null,
+        "theme_title": "пустая запись"
+    }
+}
+
+###
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "themes_iu",
+    "prm":{
+        "_id": "6514737c8c3e55b0f5cb606b",
+        "p_id": "6513356ff3c66226fd5b2f7e"
+    }
+}
+
+###
+
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "themes_s",
+    "prm":{
+    }
+}
+
+###
+
+POST http://192.168.100.7:3030/db/query HTTP/1.1
+content-type: application/json
+
+{
+    "procedureName": "themes_d",
+    "prm":{
+        "_id": "6513356ff3c66226fd5b2f7e"
+    }
+}
