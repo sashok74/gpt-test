@@ -84,14 +84,15 @@ export async function Post_IU(newpost: any) {
             },
             $set: {
                 "updated_at": prm.updated_at,
-                "asystens_msg": prm.asystens_msg,
                 "asystens_short_msg": prm.asystens_short_msg
             },
         }
-        if (prm.asystens_msg === undefined)
-            delete updateObj.$set.asystens_msg;
-        if (prm.asystens_short_msg === undefined)
-            delete updateObj.$set.asystens_short_msg;
+
+      //                "asystens_msg": prm.asystens_msg,  
+      //  if (prm.asystens_msg === undefined)
+      //      delete updateObj.$set.asystens_msg;
+      //  if (prm.asystens_short_msg === undefined)
+      //delete updateObj.$set.asystens_short_msg;
 
         console.log(`updateObj = ${updateObj}`);
 
