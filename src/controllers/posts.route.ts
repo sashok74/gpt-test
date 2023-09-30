@@ -25,7 +25,7 @@ export async function createContecstMessage(theme_id: ObjectId): Promise<any> {
         let db = await loadDB();
         const items: Tposts[] = await db.collection<Tposts>('posts').find(
             {
-                "theme_id": new ObjectId(theme_id)
+                "theme_id": theme_id
             }
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
@@ -42,7 +42,7 @@ export async function createContecstMessage(theme_id: ObjectId): Promise<any> {
         //console.log(messages);
         const item_sys = await db.collection<Tthemes>('themes').findOne(
             {
-                "theme_id": new ObjectId(theme_id)
+                "theme_id": theme_id
             }
         );
         console.log(item_sys);
