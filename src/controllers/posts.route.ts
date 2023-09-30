@@ -23,7 +23,7 @@ export async function allPosts(req: Request, res: Response) {
 export async function createContecstMessage(theme_id: string): Promise<any> {
     try {
         let db = await loadDB();
-        let sysMes = getSystemMessage(theme_id);
+        let sysMes = await getSystemMessage(theme_id);
         console.log(sysMes);
         const items: Tposts[] = await db.collection<Tposts>('posts').find(
             {
