@@ -40,13 +40,12 @@ export async function createContecstMessage(theme_id: ObjectId): Promise<any> {
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
         //console.log(messages);
-        const themeID = new ObjectId(theme_id);
-        const sys_rec = await db.collection<Tthemes>('themes').findOne(
+        const item = await db.collection<Tthemes>('themes').findOne(
             {
-                "_id": themeID
+                "theme_id": new ObjectId(theme_id)
             }
         );
-        messages.unshift({ role: 'system', content: sys_rec?.system_msg });
+        messages.unshift({ role: 'system', content: item?.system_msg });
         return messages;
     } catch (error) {
         console.log('error:', error);
