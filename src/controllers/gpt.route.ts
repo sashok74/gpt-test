@@ -17,7 +17,6 @@ export const getGPTlistModel =  async (req:Request, res:Response) => {
 
 export const getGPTChat = async (req:Request, res:Response) => {
     const last_user_msg = req.body.messages;
-    // if (req.body.theme_id === undefined)
     const theme_id = req.body.theme_id;
     const model = req.body.model;
     const maxTokens = req.body.maxTokens || 60;
