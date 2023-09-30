@@ -62,6 +62,7 @@ export async function insertPosts(req: Request, res: Response) {
 
 export async function Post_IU(newpost: any) {
     const prm: Tposts = newpost;
+    console.log(prm);
     try {
         let db = await loadDB();
         if (!prm._id) {
