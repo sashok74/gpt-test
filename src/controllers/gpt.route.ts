@@ -20,7 +20,6 @@ export const getGPTChat = async (req:Request, res:Response) => {
     const theme_id = req.body.theme_id;
     const model = req.body.model;
     const maxTokens = req.body.maxTokens || 60;
-    console.log(last_user_msg);
     try {
         const openai:OpenAIApi = await getAI();
         /*

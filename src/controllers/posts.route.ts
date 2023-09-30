@@ -24,7 +24,6 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
     try {
         let db = await loadDB();
         let sysMes = await getSystemMessage(theme_id);
-        console.log(sysMes);
         const items: Tposts[] = await db.collection<Tposts>('posts').find(
             {
                 "theme_id": new ObjectId(theme_id)
@@ -62,7 +61,6 @@ export async function insertPosts(req: Request, res: Response) {
 
 export async function Post_IU(newpost: any) {
     const prm: Tposts = newpost;
-    console.log(prm);
     try {
         let db = await loadDB();
         if (!prm._id) {
@@ -94,6 +92,8 @@ export async function Post_IU(newpost: any) {
             delete updateObj.$set.asystens_msg;
         if (prm.asystens_short_msg === undefined)
             delete updateObj.$set.asystens_short_msg;
+
+        console.log(`updateObj = ${updateObj}`);
 
         const uitems: Tposts | null = await db.collection<Tposts>('posts').findOneAndUpdate(
             { "_id": prm._id },
