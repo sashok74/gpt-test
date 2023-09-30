@@ -37,12 +37,15 @@ export async function insertThemes(req: Request, res: Response) {
             $set: {
                 "p_id": prm.p_id,
                 "updated_at": prm.updated_at,
-                "theme_title": prm.theme_title
+                "theme_title": prm.theme_title,
+                "system_msg": prm.system_msg
             },
         }
 
         if (prm.theme_title === undefined)
           delete updateObj.$set.theme_title;
+        if (prm.system_msg === undefined)
+          delete updateObj.$set.system_msg;
 
         const uitems: Tthemes | null = await db.collection<Tthemes>('themes').findOneAndUpdate(
             { "_id": prm._id },
