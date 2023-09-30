@@ -5,7 +5,7 @@ content-type: application/json
     "procedureName": "posts_iu",
     "prm":{
         "theme_id": "65146ca1e3e225e209381caa",
-        "user_msg": "напиши программу на с++ 9"
+        "user_msg": "напиши программу на с++ 10"
     }
 }
 

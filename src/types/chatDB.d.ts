@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export type Tthemes = {
-    _id: ObjectId | null,
+    _id: ObjectId,
     p_id: ObjectId | null,
     theme_title?: string,
     system_msg?: string,

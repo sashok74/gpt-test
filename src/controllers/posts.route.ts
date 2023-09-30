@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { loadDB } from '../modules/db.js';
-import { Tposts, Tthemes } from '../types/chatDB.js';
+import { Tposts } from '../types/chatDB.js';
 import { getSystemMessage } from './themes.route.js'
 
 export async function allPosts(req: Request, res: Response) {
@@ -20,12 +20,13 @@ export async function allPosts(req: Request, res: Response) {
     }
 };
 
-export async function createContecstMessage(theme_id: ObjectId): Promise<any> {
+export async function createContecstMessage(theme_id: string): Promise<any> {
+    console.log(`theme_id = ${theme_id}`);
     try {
         let db = await loadDB();
         const items: Tposts[] = await db.collection<Tposts>('posts').find(
             {
-                "theme_id": theme_id
+                "theme_id": new ObjectId(theme_id)
             }
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
@@ -39,14 +40,6 @@ export async function createContecstMessage(theme_id: ObjectId): Promise<any> {
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
-        //console.log(messages);
-        const item_sys = await db.collection<Tthemes>('themes').findOne(
-            {
-                "theme_id": theme_id
-            }
-        );
-        console.log(item_sys);
-        messages.unshift({ role: 'system', content: item_sys?.system_msg ?? "ты опытный программист" });
         return messages;
     } catch (error) {
         console.log('error:', error);

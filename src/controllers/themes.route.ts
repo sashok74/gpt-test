@@ -15,7 +15,7 @@ export async function allThemes(req: Request, res: Response) {
 };
 
 export async function insertThemes(req: Request, res: Response) {
-    const prm:Tthemes = req.body.prm;
+    const prm: Tthemes = req.body.prm;
     try {
         let db = await loadDB();
         if (!prm._id) {
@@ -43,9 +43,9 @@ export async function insertThemes(req: Request, res: Response) {
         }
 
         if (prm.theme_title === undefined)
-          delete updateObj.$set.theme_title;
+            delete updateObj.$set.theme_title;
         if (prm.system_msg === undefined)
-          delete updateObj.$set.system_msg;
+            delete updateObj.$set.system_msg;
 
         const uitems: Tthemes | null = await db.collection<Tthemes>('themes').findOneAndUpdate(
             { "_id": prm._id },
@@ -63,7 +63,7 @@ export async function insertThemes(req: Request, res: Response) {
 };
 
 export async function deleteThemes(req: Request, res: Response) {
-    const prm:Tthemes = req.body.prm;
+    const prm: Tthemes = req.body.prm;
     try {
         let db = await loadDB();
         prm._id = new ObjectId(prm._id);
@@ -90,19 +90,16 @@ export async function deleteThemes(req: Request, res: Response) {
     }
 };
 
-export async function getSystemMessage (theme_id:ObjectId){
+export async function getSystemMessage(theme_id: string) {
     try {
         let db = await loadDB();
-        const item = await db.collection<Tthemes>('themes').findOne(
+        const item: Tthemes | null = await db.collection<Tthemes>('themes').findOne(
             {
-                "theme_id": new ObjectId(theme_id)
+                "_id": new ObjectId(theme_id)
             }
-            );
-            let mes;
-            if(item?.system_msg) {
-                mes = {role: 'user', content: item.system_msg};
-            }  
-            return mes;   
+        );
+        const mes = { role: 'system', content: item?.system_msg ?? "ты опытный программист" };
+        return mes;
     } catch (error) {
         console.log('error:', error);
     }
