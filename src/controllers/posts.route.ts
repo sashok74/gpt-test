@@ -21,9 +21,10 @@ export async function allPosts(req: Request, res: Response) {
 };
 
 export async function createContecstMessage(theme_id: string): Promise<any> {
-    console.log(`theme_id = ${theme_id}`);
     try {
         let db = await loadDB();
+        let sysMes = getSystemMessage(theme_id);
+        console.log(sysMes);
         const items: Tposts[] = await db.collection<Tposts>('posts').find(
             {
                 "theme_id": new ObjectId(theme_id)
@@ -31,7 +32,6 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
             const mes = [];
-            let sysMes = getSystemMessage(theme_id);
             if (sysMes != undefined)
                 mes.push(sysMes);
             if (item.user_msg && item.asystens_msg) {
@@ -40,6 +40,9 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
+        if (sysMes !== undefined)
+           messages.unshift(sysMes);
+        console.log(messages);
         return messages;
     } catch (error) {
         console.log('error:', error);
