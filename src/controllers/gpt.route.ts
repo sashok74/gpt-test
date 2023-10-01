@@ -16,7 +16,6 @@ export const getGPTlistModel =  async (req:Request, res:Response) => {
 }
 
 export const getGPTChat = async (req:Request, res:Response) => {
-    console.log(req);
     const last_user_msg = req.body.messages;
     const theme_id = req.body.theme_id;
     const model = req.body.model;
@@ -42,7 +41,9 @@ export const getGPTChat = async (req:Request, res:Response) => {
              {"role": "user", "content": "Можешь пойти поработать за меня?"}
            ]
         */ 
+        
         let chatMes = await createContecstMessage(theme_id);
+        console.log(chatMes);
         chatMes.push(...last_user_msg);
         const response = await openai.createChatCompletion({
             model: model,
