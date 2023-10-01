@@ -35,13 +35,13 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
             console.log(item.asystens_msg);
             if (item.user_msg && item.asystens_msg) {
                 console.log(JSON.parse(item.asystens_msg));
-                mes.push({ role: 'user', content: item.user_msg});
-                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg)});
+                mes.push({ role: 'user', content: item.user_msg });
+                mes.push({ role: 'asystent', content: item.asystens_msg });
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
         if (sysMes !== undefined)
-           messages.unshift(sysMes);
+            messages.unshift(sysMes);
         return messages;
     } catch (error) {
         console.log('error:', error);
@@ -88,11 +88,11 @@ export async function Post_IU(newpost: any) {
             },
         }
 
-      //                "asystens_msg": prm.asystens_msg,  
-      //  if (prm.asystens_msg === undefined)
-      //      delete updateObj.$set.asystens_msg;
-      //  if (prm.asystens_short_msg === undefined)
-      //delete updateObj.$set.asystens_short_msg;
+        //                "asystens_msg": prm.asystens_msg,  
+        //  if (prm.asystens_msg === undefined)
+        //      delete updateObj.$set.asystens_msg;
+        //  if (prm.asystens_short_msg === undefined)
+        //delete updateObj.$set.asystens_short_msg;
 
         //console.log(`updateObj = ${updateObj}`);
 
