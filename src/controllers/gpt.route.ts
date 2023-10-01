@@ -20,7 +20,7 @@ export const getGPTChat = async (req:Request, res:Response) => {
     const theme_id = req.body.theme_id;
     const model = req.body.model;
     const maxTokens = req.body.maxTokens || 60;
-    if (last_user_msg[0] === undefined || last_user_msg[0] === '') {
+    if (last_user_msg[0] === undefined || last_user_msg[0].content === '') {
         res.status(500).send("No response from GPT-AI");
         return; 
     }
@@ -54,7 +54,7 @@ export const getGPTChat = async (req:Request, res:Response) => {
             //запишем в базу ответ интелекта
             const new_post = {
                 theme_id: theme_id,
-                user_msg: last_user_msg[0],
+                user_msg: last_user_msg[0].content,
                 asystens_msg: response.data.choices[0]?.message?.content
             };
             const uitems = await Post_IU(new_post);
