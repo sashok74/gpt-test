@@ -36,7 +36,7 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
                 console.log(item.asystens_msg.replace(/\"/g, '+'))
 
                 mes.push({ role: 'user', content: item.user_msg });
-                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg.replace(/\"/g, '+')});
+                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg.replace(/\"/g, '+'))});
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
