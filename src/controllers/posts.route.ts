@@ -33,7 +33,7 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
             const mes = [];
             if (item.user_msg && item.asystens_msg) {
                 mes.push({ role: 'user', content: item.user_msg });
-                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg).replace("\\\\\"", "").replace("\\\"", "").replace("\"", "") });
+                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg).replace("\"", "'") });
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
