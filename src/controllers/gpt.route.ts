@@ -43,7 +43,6 @@ export const getGPTChat = async (req:Request, res:Response) => {
         */ 
         
         let chatMes = await createContecstMessage(theme_id);
-        console.log(chatMes);
         chatMes.push(...last_user_msg);
         const response = await openai.createChatCompletion({
             model: model,
