@@ -16,6 +16,7 @@ export const getGPTlistModel =  async (req:Request, res:Response) => {
 }
 
 export const getGPTChat = async (req:Request, res:Response) => {
+    console.log(req);
     const last_user_msg = req.body.messages;
     const theme_id = req.body.theme_id;
     const model = req.body.model;
