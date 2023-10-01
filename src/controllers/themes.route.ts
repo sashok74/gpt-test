@@ -42,10 +42,17 @@ export async function insertThemes(req: Request, res: Response) {
             },
         }
 
-        if (prm.theme_title === undefined)
+        if (prm.theme_title === undefined || prm.system_msg === '0') {
             delete updateObj.$set.theme_title;
-        if (prm.system_msg === undefined)
+        }
+        if (prm.system_msg === undefined || prm.system_msg === '0' || prm.system_msg?.toString() === "0") {
             delete updateObj.$set.system_msg;
+        }
+
+
+        if (prm.system_msg == '0' || prm.system_msg?.toString() === "0") {
+            prm.system_msg = '';
+        }
 
         const uitems: Tthemes | null = await db.collection<Tthemes>('themes').findOneAndUpdate(
             { "_id": prm._id },
@@ -80,7 +87,10 @@ export async function deleteThemes(req: Request, res: Response) {
                         "p_id": rec.p_id ? new ObjectId(rec.p_id) : null,
                         "updated_at": prm.updated_at
                     }
-                })
+                });
+            await db.collection('posts').deleteMany(
+                { "theme_id": new ObjectId(prm._id) }
+            );
         }
 
         res.send(rec);
@@ -93,13 +103,33 @@ export async function deleteThemes(req: Request, res: Response) {
 export async function getSystemMessage(theme_id: string) {
     try {
         let db = await loadDB();
-        const item: Tthemes | null = await db.collection<Tthemes>('themes').findOne(
-            {
-                "_id": new ObjectId(theme_id)
+        let item: Tthemes | null;
+
+        async function findSystemMsg(id: string): Promise<string | null> {
+            item = await db.collection<Tthemes>('themes').findOne({
+                "_id": new ObjectId(id)
+            });
+
+            // Если у айтема есть системное сообщение и оно не пустое, то возвращаем его
+            if (item?.system_msg && item.system_msg.trim() !== "") {
+                return item.system_msg;
             }
-        );
-        const mes = { role: 'system', content: item?.system_msg ?? "ты опытный программист" };
-        return mes;
+
+            // Иначе, если у айтема есть родительский айтем, то делаем рекурсию
+            else if (item?.p_id) {
+                return findSystemMsg(item.p_id.toString());
+            }
+
+            // Если же и родительского айтема нет, то возвращаем дефолтное сообщение
+            else {
+                return "ты опытный программист";
+            }
+        }
+        const message = await findSystemMsg(theme_id);
+        return {
+            role: 'system',
+            content: message
+        };
     } catch (error) {
         console.log('error:', error);
     }

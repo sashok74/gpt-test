@@ -12,7 +12,7 @@ export async function allPosts(req: Request, res: Response) {
             {
                 "theme_id": new ObjectId(prm.theme_id)
             }
-        ).sort({ created_at: -1 }).toArray();
+        ).sort({ created_at: 1 }).toArray();
         res.send(items);
     } catch (error) {
         console.log('error:', error);
@@ -31,9 +31,10 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
             const mes = [];
-            if (item.user_msg && item.asystens_msg) {
+            if (item.user_msg && item.assistant_msg) {
+                //.replace(/\\"/g, '+'))
                 mes.push({ role: 'user', content: item.user_msg });
-                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg.replace("\"", ""))});
+                mes.push({ role: 'assistant', content: JSON.parse(item.assistant_msg)});
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
@@ -77,19 +78,19 @@ export async function Post_IU(newpost: any) {
                 "theme_id": prm.theme_id,
                 "created_at": prm.created_at,
                 "user_msg": prm.user_msg,
-                "asystens_msg": prm.asystens_msg,
+                "assistant_msg": prm.assistant_msg,
             },
             $set: {
                 "updated_at": prm.updated_at,
-                "asystens_short_msg": prm.asystens_short_msg
+                "assistant_short_msg": prm.assistant_short_msg
             },
         }
 
-        //                "asystens_msg": prm.asystens_msg,  
-        //  if (prm.asystens_msg === undefined)
-        //      delete updateObj.$set.asystens_msg;
-        //  if (prm.asystens_short_msg === undefined)
-        //delete updateObj.$set.asystens_short_msg;
+        //                "assistant_msg": prm.assistant_msg,  
+        //  if (prm.assistant_msg === undefined)
+        //      delete updateObj.$set.assistant_msg;
+        //  if (prm.assistant_short_msg === undefined)
+        //delete updateObj.$set.assistant_short_msg;
 
         //console.log(`updateObj = ${updateObj}`);
 

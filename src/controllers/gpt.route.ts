@@ -55,7 +55,7 @@ export const getGPTChat = async (req:Request, res:Response) => {
             const new_post = {
                 theme_id: theme_id,
                 user_msg: last_user_msg[0].content,
-                asystens_msg: JSON.stringify(response.data.choices[0]?.message?.content)
+                assistant_msg: JSON.stringify(response.data.choices[0]?.message?.content)
             };
             const uitems = await Post_IU(new_post);
             //теперь бы уменьшить размер ответа, чтобы экономить токены.

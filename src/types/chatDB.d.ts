@@ -13,8 +13,10 @@ export type Tposts = {
     _id: ObjectId,
     theme_id: ObjectId,
     user_msg: string,
-    asystens_msg?: string,
-    asystens_short_msg?: string,
+    assistant_msg?: string,
+    assistant_short_msg?: string,
     created_at?: Date,
     updated_at?: Date,
 }
+
+//assistant to assistant
