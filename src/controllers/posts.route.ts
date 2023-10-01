@@ -32,14 +32,13 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         const messages = items.map((item): any[] => {
             const mes = [];
             if (item.user_msg && item.asystens_msg) {
-                mes.push({ role: 'user', content: item.user_msg.replace(/\\\\"/g, '\\"')});
-                mes.push({ role: 'asystent', content: item.asystens_msg.replace(/\\\\"/g, '\\"')});
+                mes.push({ role: 'user', content: item.user_msg});
+                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg)});
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
         if (sysMes !== undefined)
            messages.unshift(sysMes);
-        return messages;
     } catch (error) {
         console.log('error:', error);
     }
