@@ -31,8 +31,6 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
             const mes = [];
-            if (sysMes != undefined)
-                mes.push(sysMes);
             if (item.user_msg && item.asystens_msg) {
                 mes.push({ role: 'user', content: item.user_msg });
                 mes.push({ role: 'asystent', content: item.asystens_msg });
@@ -41,7 +39,7 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         }).reduce((acc, val) => acc.concat(val), []);
         if (sysMes !== undefined)
            messages.unshift(sysMes);
-        console.log(messages);
+        //console.log(messages);
         return messages;
     } catch (error) {
         console.log('error:', error);
@@ -94,7 +92,7 @@ export async function Post_IU(newpost: any) {
       //  if (prm.asystens_short_msg === undefined)
       //delete updateObj.$set.asystens_short_msg;
 
-        console.log(`updateObj = ${updateObj}`);
+        //console.log(`updateObj = ${updateObj}`);
 
         const uitems: Tposts | null = await db.collection<Tposts>('posts').findOneAndUpdate(
             { "_id": prm._id },
