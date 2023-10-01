@@ -31,9 +31,11 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         ).sort({ created_at: -1 }).toArray();
         const messages = items.map((item): any[] => {
             const mes = [];
+            console.log('===============');
+            console.log(JSON.stringify(item.asystens_msg))
             if (item.user_msg && item.asystens_msg) {
                 mes.push({ role: 'user', content: item.user_msg });
-                mes.push({ role: 'asystent', content: JSON.parse(item.asystens_msg.replace("\\\"", ""))});
+                mes.push({ role: 'asystent', content: JSON.parse(JSON.stringify(item.asystens_msg).replace("\\\"", "\""))});
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
