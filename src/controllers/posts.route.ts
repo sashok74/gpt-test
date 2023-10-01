@@ -29,7 +29,6 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
                 "theme_id": new ObjectId(theme_id)
             }
         ).sort({ created_at: -1 }).toArray();
-        console.log(sysMes);
         const messages = items.map((item): any[] => {
             const mes = [];
             console.log('==============');
@@ -41,9 +40,9 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
             }
             return mes;
         }).reduce((acc, val) => acc.concat(val), []);
-        console.log(messages);
         if (sysMes !== undefined)
            messages.unshift(sysMes);
+        return messages;
     } catch (error) {
         console.log('error:', error);
     }
