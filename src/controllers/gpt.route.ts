@@ -51,6 +51,9 @@ export const getGPTChat = async (req:Request, res:Response) => {
 
         if (response.data) {
             //запишем в базу ответ интелекта
+            console.log('======new_post========');
+            console.log(response.data.choices[0]?.message?.content);
+            console.log( JSON.stringify(response.data.choices[0]?.message?.content));
             const new_post = {
                 theme_id: theme_id,
                 user_msg: last_user_msg[0].content,
