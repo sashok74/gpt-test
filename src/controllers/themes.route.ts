@@ -42,10 +42,14 @@ export async function insertThemes(req: Request, res: Response) {
             },
         }
 
-        if (prm.theme_title === undefined)
+        if (prm.theme_title === undefined || prm.system_msg === '0' || prm.system_msg?.trim() === "")
             delete updateObj.$set.theme_title;
-        if (prm.system_msg === undefined)
+        if (prm.system_msg === undefined || prm.system_msg === '0') 
             delete updateObj.$set.system_msg;
+ 
+        if (prm.system_msg === '0'){
+            prm.system_msg = '';
+        }
 
         const uitems: Tthemes | null = await db.collection<Tthemes>('themes').findOneAndUpdate(
             { "_id": prm._id },
