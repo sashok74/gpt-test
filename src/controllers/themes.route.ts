@@ -47,7 +47,7 @@ export async function insertThemes(req: Request, res: Response) {
         if (prm.system_msg === undefined || prm.system_msg === '0') 
             delete updateObj.$set.system_msg;
  
-        if (prm.system_msg === '0'){
+        if (prm.system_msg == '0' ){
             prm.system_msg = '';
         }
 
@@ -123,7 +123,6 @@ export async function getSystemMessage(theme_id: string) {
             }
         }
         const message = await findSystemMsg(theme_id);
-        console.log(message);
         return {
             role: 'system',
             content: message
