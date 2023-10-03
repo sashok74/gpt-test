@@ -32,7 +32,9 @@ export async function insertThemes(req: Request, res: Response) {
         let updateObj = {
             $setOnInsert: {
                 "_id": prm._id,
-                "created_at": prm.created_at
+                "created_at": prm.created_at,
+                "theme_title": prm.theme_title,
+                "system_msg": prm.system_msg
             },
             $set: {
                 "p_id": prm.p_id,
@@ -42,12 +44,17 @@ export async function insertThemes(req: Request, res: Response) {
             },
         }
 
-        if (prm.theme_title === undefined || prm.system_msg === '0')
+        if (prm.theme_title === undefined || prm.system_msg === '0') {
             delete updateObj.$set.theme_title;
-        if (prm.system_msg === undefined || prm.system_msg === '0') 
+            delete updateObj.$setOnInsert.theme_title;
+        }
+        if (prm.system_msg === undefined || prm.system_msg === '0' || prm.system_msg?.toString() === "0") {
             delete updateObj.$set.system_msg;
- 
-        if (prm.system_msg == '0' ){
+            delete updateObj.$setOnInsert.system_msg;
+        }
+
+
+        if (prm.system_msg == '0' || prm.system_msg?.toString() === "0") {
             prm.system_msg = '';
         }
 
