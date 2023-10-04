@@ -79,6 +79,8 @@ export async function Post_IU(newpost: any) {
                 "created_at": prm.created_at,
                 "user_msg": prm.user_msg,
                 "assistant_msg": prm.assistant_msg,
+                "model": prm.model,
+                "usage": prm.usage, 
             },
             $set: {
                 "updated_at": prm.updated_at,
