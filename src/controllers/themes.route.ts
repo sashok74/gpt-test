@@ -38,15 +38,21 @@ export async function insertThemes(req: Request, res: Response) {
                 "p_id": prm.p_id,
                 "updated_at": prm.updated_at,
                 "theme_title": prm.theme_title,
-                "system_msg": prm.system_msg
+                "system_msg": prm.system_msg,
+                "solution": prm.solution
             },
         }
 
-        if (prm.theme_title === undefined || prm.system_msg === '0') {
+        if (prm.theme_title === undefined) {
             delete updateObj.$set.theme_title;
         }
+
         if (prm.system_msg === undefined || prm.system_msg === '0' || prm.system_msg?.toString() === "0") {
             delete updateObj.$set.system_msg;
+        }
+
+        if (prm.solution === undefined || prm.solution === '0' || prm.solution?.toString() === "0") {
+            delete updateObj.$set.solution;
         }
 
 

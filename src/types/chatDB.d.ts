@@ -5,6 +5,7 @@ export type Tthemes = {
   p_id: ObjectId | null;
   theme_title?: string;
   system_msg?: string;
+  solution?: string;
   created_at?: Date;
   updated_at?: Date | undefined;
 };
