@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { loadDB } from '../modules/db.js';
-import { Tthemes } from '../types/chatDB.js';
+import { Tposts, Tthemes } from '../types/chatDB.js';
 
 export async function allThemes(req: Request, res: Response) {
     try {
@@ -98,6 +98,10 @@ export async function deleteThemes(req: Request, res: Response) {
                 { "theme_id": new ObjectId(prm._id) }
             );
         }
+        // удалить посты связанные с темой
+        await db.collection<Tposts>('themes').deleteMany(
+            { "theme_id": { $eq: prm._id } }
+        );
 
         res.send(rec);
     } catch (error) {
