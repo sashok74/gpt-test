@@ -135,6 +135,7 @@ export async function deletePosts(req: Request, res: Response) {
     const rec: Tposts | null = await db
       .collection<Tposts>("posts")
       .findOneAndDelete({ _id: { eq: prm._id } });
+      console.log(prm._id);
       console.log(rec);
     res.send(rec);
   } catch (error) {
