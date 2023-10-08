@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { loadDB } from "../modules/db.js";
-import { Tposts } from "../types/chatDB.js";
+import { Tposts,TpostsMes ,TChatMes } from "../types/chatDB.js";
 import { getSystemMessage } from "./themes.route.js";
+import dotenv from 'dotenv';
+import { inflateSync } from "zlib";
+dotenv.config();
+
+const MAX_TOKENS = process.env.MAX_TOKENS || 4096;
 
 export async function allPosts(req: Request, res: Response) {
   const prm: Tposts = req.body.prm;
@@ -33,17 +38,40 @@ export async function allPosts(req: Request, res: Response) {
   }
 }
 
+function makeMessageArray(inArr: TpostsMes[], maxTokens:number): TChatMes[] {
+  let mes: TChatMes[] = [];
+  let totalToken = 0;
+  for (let i = inArr.length - 1; i >= 0 && totalToken < maxTokens; i--) {
+    totalToken =  totalToken + inArr[i].tokens;
+    let assistant_msg = inArr[i].assistant_msg;
+    if (totalToken <= maxTokens && inArr[i].assistant_msg != undefined && typeof assistant_msg === 'string') {
+      mes.unshift({ role: "user", content: inArr[i].user_msg });
+      mes.unshift({ role: "assistant", content: JSON.parse(assistant_msg)});
+    }
+  }
+  return mes;
+}
+
 export async function createContecstMessage(theme_id: string): Promise<any> {
   try {
     let db = await loadDB();
     let sysMes = await getSystemMessage(theme_id);
-    const items: Tposts[] = await db
-      .collection<Tposts>("posts")
+    const items: TpostsMes[] = await db
+      .collection<TpostsMes>("posts")
       .find({
         theme_id: new ObjectId(theme_id),
+      },
+      {
+        projection: {
+          created_at: 1,
+          user_msg: 1,
+          assistant_msg: 1,
+          tokens: "$usage.completion_tokens",
+        }
       })
       .sort({ created_at: -1 })
       .toArray();
+    /*
     const messages = items
       .map((item): any[] => {
         const mes = [];
@@ -57,8 +85,10 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
         }
         return mes;
       })
-      .reduce((acc, val) => acc.concat(val), []);
-    if (sysMes !== undefined) messages.unshift(sysMes);
+      .reduce((acc, val) => acc.concat(val), []);*/
+    let messages = makeMessageArray(items, MAX_TOKENS);
+    console.log("messages:", messages);
+    if (sysMes !== undefined ) messages.unshift(sysMes);
     return messages;
   } catch (error) {
     console.log("error:", error);

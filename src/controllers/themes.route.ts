@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { loadDB } from '../modules/db.js';
-import { Tposts, Tthemes } from '../types/chatDB.js';
+import { TChatMes, Tposts, Tthemes } from '../types/chatDB.js';
 
 export async function allThemes(req: Request, res: Response) {
     try {
@@ -110,7 +110,7 @@ export async function deleteThemes(req: Request, res: Response) {
     }
 };
 
-export async function getSystemMessage(theme_id: string) {
+export async function getSystemMessage(theme_id: string):Promise<any> {
     try {
         let db = await loadDB();
         let item: Tthemes | null;

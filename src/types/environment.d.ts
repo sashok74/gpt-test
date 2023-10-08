@@ -8,6 +8,7 @@ declare global {
       MONGODB_PASSWORD: string;
       MONGODB_BASE: string;
       APIKEY: string;
+      MAX_TOKENS: number;
     }
   }
 }

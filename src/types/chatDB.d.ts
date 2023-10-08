@@ -26,3 +26,14 @@ export type Tposts = {
   };
 };
 
+export type TpostsMes = {
+  user_msg: string;
+  assistant_msg?: string;
+  created_at?: Date;
+  tokens: number;
+};
+
+export type TChatMes = {
+  role: string;
+  content?: string;
+};
