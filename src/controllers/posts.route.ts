@@ -38,7 +38,7 @@ export async function allPosts(req: Request, res: Response) {
   }
 }
 
-function makeMessageArray(inArr: TpostsMes[], maxTokens:number): TChatMes[] {
+function makeMessageArray(inArr: TpostsMes[], maxTokens:number){
   let mes: TChatMes[] = [];
   let totalToken = 0;
   for (let i = inArr.length - 1; i >= 0 && totalToken < maxTokens; i--) {
@@ -49,7 +49,7 @@ function makeMessageArray(inArr: TpostsMes[], maxTokens:number): TChatMes[] {
       mes.unshift({ role: "assistant", content: JSON.parse(assistant_msg)});
     }
   }
-  return mes;
+  return {mes, totalToken};
 }
 
 export async function createContecstMessage(theme_id: string): Promise<any> {
@@ -69,25 +69,11 @@ export async function createContecstMessage(theme_id: string): Promise<any> {
           tokens: "$usage.completion_tokens",
         }
       })
-      .sort({ created_at: -1 })
+      .sort({ created_at: 1 })
       .toArray();
-    /*
-    const messages = items
-      .map((item): any[] => {
-        const mes = [];
-        if (item.user_msg && item.assistant_msg) {
-          //.replace(/\\"/g, '+'))
-          mes.push({ role: "user", content: item.user_msg });
-          mes.push({
-            role: "assistant",
-            content: JSON.parse(item.assistant_msg),
-          });
-        }
-        return mes;
-      })
-      .reduce((acc, val) => acc.concat(val), []);*/
-    let messages = makeMessageArray(items, MAX_TOKENS);
-    console.log("messages:", messages);
+
+    let {mes: messages, totalToken} = makeMessageArray(items, MAX_TOKENS);
+    console.log("messages total tokens:", totalToken);
     if (sysMes !== undefined ) messages.unshift(sysMes);
     return messages;
   } catch (error) {
